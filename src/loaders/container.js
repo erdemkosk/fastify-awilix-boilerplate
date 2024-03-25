@@ -1,10 +1,20 @@
-import awilix, { asClass } from 'awilix';
+import awilix, { asClass, asFunction } from 'awilix';
 
 import {
   diContainer,
 } from '@fastify/awilix';
 
 import { transformModuleName, transformRouteHandler, __dirname } from './utils.js';
+
+import config from '../config/index.js';
+
+await diContainer.register({
+  config: asFunction(() => config).singleton(),
+}, {
+  resolverOptions: {
+    esModules: true,
+  },
+});
 
 await diContainer.loadModules(['../server/repositories/*.js'], {
   cwd: __dirname,

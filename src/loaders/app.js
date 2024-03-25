@@ -1,9 +1,6 @@
 import Fastify from 'fastify';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { fastifyAwilixPlugin } from '@fastify/awilix';
 import container from './container.js';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
 
 export default class App {
   constructor({

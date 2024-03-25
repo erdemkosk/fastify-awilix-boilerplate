@@ -1,10 +1,13 @@
 export default class ExampleService {
-  constructor({ ExampleRepository }) {
+  constructor({ config, ExampleRepository }) {
+    this.config = config;
     this.ExampleRepository = ExampleRepository;
   }
 
   async getExamples() {
-    const { ExampleRepository } = this;
+    const { config, ExampleRepository } = this;
+
+    console.log(JSON.stringify(config));
 
     const examples = await ExampleRepository.getExamples();
 
