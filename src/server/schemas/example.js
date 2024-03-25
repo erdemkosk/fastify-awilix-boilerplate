@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-export const getExample = {
+export const getExamples = {
   response: {
     200: {
       type: 'array',
@@ -10,6 +10,25 @@ export const getExample = {
           id: { type: 'integer' },
           name: { type: 'string' },
         },
+      },
+    },
+  },
+};
+
+export const getExample = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'integer' },
+    },
+    required: ['id'],
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        id: { type: 'integer' },
+        name: { type: 'string' },
       },
     },
   },

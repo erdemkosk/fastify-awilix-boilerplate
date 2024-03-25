@@ -9,4 +9,11 @@ export default class ExampleController {
     const { examples } = await ExampleService.getExamples();
     res.send(examples);
   }
+
+  async getExample(req, res) {
+    const { ExampleService } = this;
+
+    const { example } = await ExampleService.getExample();
+    res.send(example);
+  }
 }

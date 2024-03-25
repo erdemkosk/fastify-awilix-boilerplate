@@ -15,4 +15,16 @@ export default class ExampleService {
       examples,
     };
   }
+
+  async getExample() {
+    const { config, ExampleRepository } = this;
+
+    console.log(JSON.stringify(config));
+
+    const example = await ExampleRepository.getExample();
+
+    return {
+      example,
+    };
+  }
 }

@@ -9,4 +9,8 @@ export default class ExampleRepository {
 
     return examples;
   }
+
+  async getExample() {
+    return { id: 1, name: 'Example 1' };
+  }
 }

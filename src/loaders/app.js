@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 import Fastify from 'fastify';
-import { fastifyAwilixPlugin } from '@fastify/awilix';
+
 import container from './container.js';
+import { plugins } from './plugin.js';
 
 export default class App {
   constructor({
@@ -14,20 +16,24 @@ export default class App {
     this.preRoutesMiddlewares = preRoutesMiddlewares;
     this.postRoutesMiddlewares = postRoutesMiddlewares;
 
-    this.loadModules();
+    this.loadPlugins();
     this.loadMiddlewares({ middlewares: preRoutesMiddlewares });
     this.loadRoutes({ routes: container.routes });
     this.loadMiddlewares({ middlewares: postRoutesMiddlewares });
   }
 
-  loadModules() {
+  async loadPlugins() {
     const { fastify } = this;
 
-    fastify.register(fastifyAwilixPlugin, {
-      disposeOnClose: true,
-      disposeOnResponse: true,
-      strictBooleanEnforced: true,
-    });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const { plugin, options, name } of plugins) {
+      try {
+        fastify.register(plugin, options);
+        console.log(`${name} plugin  registered with success!`);
+      } catch (error) {
+        console.error(`${name} plugin  cannot registered:`, error);
+      }
+    }
   }
 
   loadMiddlewares({ middlewares }) {
@@ -38,12 +44,16 @@ export default class App {
     });
   }
 
-  loadRoutes({ routes }) {
+  async loadRoutes({ routes }) {
     const { fastify } = this;
 
-    routes.forEach((route) => {
-      fastify.route(route);
-    });
+    // eslint-disable-next-line no-restricted-syntax
+    for (const route of routes) {
+      // eslint-disable-next-line no-await-in-loop
+      await fastify.register(async (fastifyInstance) => {
+        fastifyInstance.route(route);
+      });
+    }
   }
 
   async listen() {
