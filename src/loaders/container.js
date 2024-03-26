@@ -1,4 +1,5 @@
 import awilix, { asClass, asFunction } from 'awilix';
+import Fastify from 'fastify';
 
 import {
   diContainer,
@@ -8,29 +9,24 @@ import { transformModuleName, transformRouteHandler, __dirname } from './utils.j
 
 import config from '../config/index.js';
 
+const fastify = Fastify({
+  logger: true,
+  level: config.log.level,
+});
+
 await diContainer.register({
+  fastify: asFunction(() => fastify).singleton(),
   config: asFunction(() => config).singleton(),
+  logger: asFunction(() => fastify.log).singleton(),
 }, {
   resolverOptions: {
     esModules: true,
   },
 });
 
-await diContainer.loadModules(['../server/repositories/*.js'], {
-  cwd: __dirname,
-  formatName: transformModuleName,
-  resolverOptions: { register: asClass },
-  esModules: true,
-});
+const modules = [['../server/repositories/*.js'], ['../server/services/*.js'], ['../server/controllers/*.js']];
 
-await diContainer.loadModules(['../server/services/*.js'], {
-  cwd: __dirname,
-  formatName: transformModuleName,
-  resolverOptions: { register: asClass },
-  esModules: true,
-});
-
-await diContainer.loadModules(['../server/controllers/*.js'], {
+await diContainer.loadModules(modules, {
   cwd: __dirname,
   formatName: transformModuleName,
   resolverOptions: { register: asClass },
@@ -51,4 +47,4 @@ const routes = await awilix.listModules(['../server/routes/*.js'], { cwd: __dirn
     return route.concat(moduleRoutes.map(routeTransformer));
   }, []);
 
-export default { diContainer, routes };
+export default { fastify, routes };

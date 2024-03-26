@@ -1,13 +1,16 @@
 export default class ExampleService {
-  constructor({ config, ExampleRepository }) {
+  constructor({
+    fastify, config, logger, ExampleRepository,
+  }) {
+    this.fastify = fastify;
     this.config = config;
+    this.logger = logger;
+
     this.ExampleRepository = ExampleRepository;
   }
 
   async getExamples() {
-    const { config, ExampleRepository } = this;
-
-    console.log(JSON.stringify(config));
+    const { ExampleRepository } = this;
 
     const examples = await ExampleRepository.getExamples();
 
@@ -17,9 +20,13 @@ export default class ExampleService {
   }
 
   async getExample() {
-    const { config, ExampleRepository } = this;
+    const {
+      fastify, config, logger, ExampleRepository,
+    } = this;
 
-    console.log(JSON.stringify(config));
+    logger.info(JSON.stringify(config));
+
+    logger.info(fastify);
 
     const example = await ExampleRepository.getExample();
 

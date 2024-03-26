@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-import Fastify from 'fastify';
-
 import container from './container.js';
 import { plugins } from './plugin.js';
 
@@ -8,10 +5,7 @@ export default class App {
   constructor({
     port, preRoutesMiddlewares, postRoutesMiddlewares,
   }) {
-    this.fastify = Fastify({
-      logger: true,
-    });
-
+    this.fastify = container.fastify;
     this.port = port;
     this.preRoutesMiddlewares = preRoutesMiddlewares;
     this.postRoutesMiddlewares = postRoutesMiddlewares;
@@ -29,9 +23,9 @@ export default class App {
     for (const { plugin, options, name } of plugins) {
       try {
         fastify.register(plugin, options);
-        console.log(`${name} plugin  registered with success!`);
+        this.fastify.log.info(`${name} plugin  registered with success!`);
       } catch (error) {
-        console.error(`${name} plugin  cannot registered:`, error);
+        this.fastify.log.info(`${name} plugin  cannot registered:`, error);
       }
     }
   }
