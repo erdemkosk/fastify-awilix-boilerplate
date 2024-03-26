@@ -1,4 +1,4 @@
-# Fastify Awilix Boilerplate
+![logo](https://i.imgur.com/qQU9j6b.png)
 
 This project is designed to provide a foundation for getting started quickly with Fastify and Awilix. Fastify is a fast and efficient web framework; Awilix is a library used for dependency injection and inversion of control.
 
@@ -7,7 +7,9 @@ This project is designed to provide a foundation for getting started quickly wit
 - **Dependency Injection**: Implement dependency injection using Awilix, eliminate tight couplings between components, and make the code more testable.
 - **Modular Structure**: Organize components such as services, controllers, repositories, etc., in a modular way for better maintainability.
 - **Flexible Configuration**: Customize the project according to your needs with a pre-configured but flexible structure.
-- **Quick Start**: Start your project quickly with a ready-made foundation and save time.
+- **Custom Error Handling**: Easily handle errors by extending custom error classes provided in the `errors` folder. Define specific error messages, status codes, and additional data as needed.
+- **Custom Plugins**: Leverage Fastify's plugin system to easily extend and customize your application's functionality. Encapsulate reusable components, middleware, and routes into custom plugins for improved modularity and maintainability.
+- **Configuration Management**: Manage application settings effortlessly by editing configuration files in the `config` folder. Customize various aspects of your application based on different environments (development, production, etc.) for enhanced flexibility and adaptability.
 
 ## Getting Started
 
