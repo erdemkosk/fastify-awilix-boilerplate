@@ -1,6 +1,8 @@
 import Swagger from '@fastify/swagger';
 import SwaggerUI from '@fastify/swagger-ui';
 import { fastifyAwilixPlugin } from '@fastify/awilix';
+import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
 
 export const plugins = [
   {
@@ -28,5 +30,15 @@ export const plugins = [
       },
       staticCSP: true,
     },
+  },
+  {
+    plugin: cors,
+    name: 'Cors',
+    options: { },
+  },
+  {
+    plugin: helmet,
+    name: 'Helmet',
+    options: { },
   },
 ];

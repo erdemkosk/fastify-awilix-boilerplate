@@ -26,5 +26,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'no-underscore-dangle': 'off',
     'import/prefer-default-export': 'off',
+    'max-classes-per-file': 'off',
   },
 };

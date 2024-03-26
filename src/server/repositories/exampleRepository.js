@@ -10,7 +10,7 @@ export default class ExampleRepository {
     return examples;
   }
 
-  async getExample() {
-    return { id: 1, name: 'Example 1' };
+  async getExample({ id }) {
+    return Number(id) === 1 ? { id: 1, name: 'Example 1' } : undefined;
   }
 }

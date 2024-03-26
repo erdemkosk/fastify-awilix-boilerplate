@@ -7,13 +7,17 @@ export default class ExampleController {
     const { ExampleService } = this;
 
     const { examples } = await ExampleService.getExamples();
+
     res.send(examples);
   }
 
   async getExample(req, res) {
     const { ExampleService } = this;
 
-    const { example } = await ExampleService.getExample();
+    const { id } = req.params;
+
+    const { example } = await ExampleService.getExample({ id });
+
     res.send(example);
   }
 }

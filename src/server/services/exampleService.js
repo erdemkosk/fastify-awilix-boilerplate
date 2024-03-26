@@ -1,3 +1,7 @@
+import CustomErrors from '../../errors/error-util.js';
+
+const { ExampleNotFound } = CustomErrors;
+
 export default class ExampleService {
   constructor({
     fastify, config, logger, ExampleRepository,
@@ -19,16 +23,16 @@ export default class ExampleService {
     };
   }
 
-  async getExample() {
+  async getExample({ id }) {
     const {
-      fastify, config, logger, ExampleRepository,
+      ExampleRepository,
     } = this;
 
-    logger.info(JSON.stringify(config));
+    const example = await ExampleRepository.getExample({ id });
 
-    logger.info(fastify);
-
-    const example = await ExampleRepository.getExample();
+    if (!example) {
+      throw new ExampleNotFound();
+    }
 
     return {
       example,

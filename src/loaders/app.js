@@ -3,17 +3,13 @@ import { plugins } from './plugin.js';
 
 export default class App {
   constructor({
-    port, preRoutesMiddlewares, postRoutesMiddlewares,
+    port,
   }) {
     this.fastify = container.fastify;
     this.port = port;
-    this.preRoutesMiddlewares = preRoutesMiddlewares;
-    this.postRoutesMiddlewares = postRoutesMiddlewares;
 
     this.loadPlugins();
-    this.loadMiddlewares({ middlewares: preRoutesMiddlewares });
     this.loadRoutes({ routes: container.routes });
-    this.loadMiddlewares({ middlewares: postRoutesMiddlewares });
   }
 
   async loadPlugins() {
@@ -23,19 +19,11 @@ export default class App {
     for (const { plugin, options, name } of plugins) {
       try {
         fastify.register(plugin, options);
-        this.fastify.log.info(`${name} plugin  registered with success!`);
+        this.fastify.log.info(`${name} plugin registered with success!`);
       } catch (error) {
-        this.fastify.log.info(`${name} plugin  cannot registered:`, error);
+        this.fastify.log.info(`${name} plugin cannot registered:`, error);
       }
     }
-  }
-
-  loadMiddlewares({ middlewares }) {
-    const { fastify } = this;
-
-    middlewares.forEach((middleware) => {
-      fastify.use(middleware);
-    });
   }
 
   async loadRoutes({ routes }) {
