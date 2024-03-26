@@ -1,4 +1,4 @@
-![logo](https://i.imgur.com/qQU9j6b.png)
+![logo](https://i.imgur.com/7JGUmOX.png)
 
 This project is designed to provide a foundation for getting started quickly with Fastify and Awilix. Fastify is a fast and efficient web framework; Awilix is a library used for dependency injection and inversion of control.
 
