@@ -47,4 +47,4 @@ const routes = await awilix.listModules(['../server/routes/*.js'], { cwd: __dirn
     return route.concat(moduleRoutes.map(routeTransformer));
   }, []);
 
-export default { fastify, routes };
+export default { fastify, routes, diContainer };
