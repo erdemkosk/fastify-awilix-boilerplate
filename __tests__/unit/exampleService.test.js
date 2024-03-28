@@ -1,10 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import fastify from 'fastify';
-import jest from 'jest-mock';
+import { jest } from '@jest/globals';
 import awilix from 'awilix';
 import container from '../../src/loaders/container';
 
 import { ExampleRepository } from '../mock/repositories/index.js';
+import CustomErrors from '../../src/errors/error-util';
+
+const { ExampleNotFound } = CustomErrors;
 
 describe('exampleService', () => {
   let exampleService;
@@ -15,25 +18,46 @@ describe('exampleService', () => {
   });
 
   afterEach(() => {
-
+    jest.resetAllMocks();
   });
 
-  afterAll(async () => {
-    // await stop();
+  describe('getExamples', () => {
+    it('should get examples', async () => {
+      const mockExamples = [
+        { id: 1, name: 'Example 1' },
+        { id: 2, name: 'Example 2' },
+      ];
+
+      ExampleRepository.getExamples.mockResolvedValue(
+        mockExamples,
+      );
+
+      const result = await exampleService.getExamples();
+
+      expect(result.examples).toEqual(mockExamples);
+    });
   });
 
-  it('should get examples', async () => {
-    const mockExamples = [
-      { id: 1, name: 'Example 1' },
-      { id: 2, name: 'Example 2' },
-    ];
+  describe('getExample', () => {
+    it('should return an example if it exists', async () => {
+      const exampleId = 1;
+      const exampleData = { id: exampleId, name: 'Test Example' };
 
-    ExampleRepository.getExamples = jest.fn().mockResolvedValueOnce(
-      mockExamples,
-    );
+      ExampleRepository.getExample.mockResolvedValue(exampleData);
 
-    const result = await exampleService.getExamples();
+      const result = await exampleService.getExample({ id: exampleId });
 
-    expect(result.examples).toEqual(mockExamples);
+      expect(ExampleRepository.getExample).toHaveBeenCalledWith({ id: exampleId });
+      expect(result.example).toEqual(exampleData);
+    });
+
+    it('should throw ExampleNotFound if the example does not exist', async () => {
+      const exampleId = 2;
+
+      ExampleRepository.getExample.mockResolvedValue(undefined);
+
+      await expect(exampleService.getExample({ id: exampleId }))
+        .rejects.toThrow(ExampleNotFound);
+    });
   });
 });

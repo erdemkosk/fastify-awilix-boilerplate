@@ -1,5 +1,8 @@
-import jest from 'jest-mock';
+import { jest } from '@jest/globals';
 
-const getExamples = jest.fn();
+const ExampleRepository = {
+  getExamples: jest.fn(),
+  getExample: jest.fn(),
+};
 
-export default { getExamples };
+export default ExampleRepository;
