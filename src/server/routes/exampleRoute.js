@@ -1,4 +1,5 @@
 import { getExamples, getExample } from '../schemas/example.js';
+import { logRequest } from '../../loaders/middleware.js';
 
 export default [
   {
@@ -7,6 +8,7 @@ export default [
     schema: {
       getExamples,
     },
+    preHandler: [logRequest],
     handler: 'ExampleController.getExamples',
   },
   {
