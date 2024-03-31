@@ -1,51 +1,39 @@
+/* eslint-disable no-restricted-syntax */
+import fastify from 'fastify';
 import container from './container.js';
 import { plugins } from './plugin.js';
 
-export default class App {
-  constructor({
-    port,
-  }) {
-    this.fastify = container.fastify;
-    this.port = port;
+export default function createApp({ port, logger, disabledPlugins = [] }) {
+  const app = fastify({
+    logger,
+  });
 
-    this.loadPlugins();
-    this.loadRoutes({ routes: container.routes });
-  }
+  const activePlugins = plugins.filter(({ name }) => !disabledPlugins.includes(name));
 
-  async loadPlugins() {
-    const { fastify } = this;
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const { plugin, options, name } of plugins) {
-      try {
-        fastify.register(plugin, options);
-        this.fastify.log.info(`${name} plugin registered with success!`);
-      } catch (error) {
-        this.fastify.log.info(`${name} plugin cannot registered:`, error);
-      }
-    }
-  }
-
-  async loadRoutes({ routes }) {
-    const { fastify } = this;
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const route of routes) {
-      // eslint-disable-next-line no-await-in-loop
-      await fastify.register(async (fastifyInstance) => {
-        fastifyInstance.route(route);
-      });
-    }
-  }
-
-  async listen() {
-    const { fastify, port } = this;
-
+  for (const { plugin, options, name } of activePlugins) {
     try {
-      await fastify.listen({ port });
-    } catch (err) {
-      fastify.log.error(err);
+      app.register(plugin, options);
+      app.log.info(`${name} plugin registered with success!`);
+    } catch (error) {
+      app.log.info(`${name} plugin cannot registered:`, error);
+    }
+  }
+
+  for (const route of container.routes) {
+    try {
+      app.route(route);
+    } catch (error) {
+      app.log.error(`Error loading route: ${error.message}`);
+    }
+  }
+
+  app.listen(port, (err) => {
+    if (err) {
+      app.log.error(err);
       process.exit(1);
     }
-  }
+    app.log.info(`Server is running on port ${port}`);
+  });
+
+  return app;
 }

@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node  index.js",
-    "test": "node --inspect --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "start": "node --no-warnings index.js",
+    "test": "node --no-warnings --test __tests__/"
   },
   "keywords": [],
   "author": "Erdem Köşk <erdemkosk@gmail.com>",

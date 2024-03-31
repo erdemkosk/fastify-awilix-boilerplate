@@ -1,8 +1,8 @@
-import { jest } from '@jest/globals';
+import { mock } from 'node:test';
 
 const ExampleRepository = {
-  getExamples: jest.fn(),
-  getExample: jest.fn(),
+  getExamples: mock.fn(),
+  getExample: mock.fn(),
 };
 
 export default ExampleRepository;

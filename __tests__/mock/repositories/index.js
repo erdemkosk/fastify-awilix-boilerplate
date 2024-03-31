@@ -1,4 +1,4 @@
-import ExampleRepository from './exampleRepository';
+import ExampleRepository from './exampleRepository.js';
 
 export {
   ExampleRepository,

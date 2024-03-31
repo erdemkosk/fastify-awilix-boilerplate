@@ -1,7 +1,5 @@
-import App from './src/loaders/app.js';
+import createApp from './src/loaders/app.js';
 
-const app = new App({
-  port: 3000,
-});
+const app = createApp({ port: 3000, logger: true });
 
 app.listen();
