@@ -1,12 +1,12 @@
 import {
-  test, before, after, mock, beforeEach, describe,
+  test, before, after, describe,
 } from 'node:test';
 import assert from 'node:assert';
 import createTestServer from '../helper.js';
 
 let app;
 
-describe('Example Service integration Test', async () => {
+describe('Example Controller integration Test', async () => {
   before(async () => {
     app = await createTestServer();
     await app.listen();

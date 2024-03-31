@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node --no-warnings index.js",
-    "test": "node --no-warnings --test __tests__/"
+    "test": "node --no-warnings --experimental-test-coverage --test __tests__/"
   },
   "keywords": [],
   "author": "Erdem Köşk <erdemkosk@gmail.com>",
@@ -24,7 +24,6 @@
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.1",
-    "jest": "^29.7.0"
+    "eslint-plugin-import": "^2.29.1"
   }
 }
