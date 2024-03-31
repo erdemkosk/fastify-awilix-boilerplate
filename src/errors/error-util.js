@@ -1,4 +1,3 @@
-/* eslint-disable no-return-assign */
 import CUSTOM_ERRORS from './error-messages.js';
 
 const generateCustomErrors = (extendClass, generatedClass, message, code, statusCode) => ({
@@ -9,7 +8,7 @@ const generateCustomErrors = (extendClass, generatedClass, message, code, status
   },
 }[generatedClass]);
 
-export default Object.keys(CUSTOM_ERRORS).reduce((acc, customError) => ({
+const customErrors = Object.keys(CUSTOM_ERRORS).reduce((acc, customError) => ({
   ...acc,
   [customError]: generateCustomErrors(
     CUSTOM_ERRORS[customError].parentError,
@@ -18,3 +17,5 @@ export default Object.keys(CUSTOM_ERRORS).reduce((acc, customError) => ({
     CUSTOM_ERRORS[customError].code,
   ),
 }), {});
+
+export default customErrors;

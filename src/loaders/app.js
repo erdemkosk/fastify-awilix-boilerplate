@@ -1,18 +1,27 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import fastify from 'fastify';
 import container from './container.js';
 import { plugins } from './plugin.js';
+import config from '../config/index.js';
 
-export default function createApp({ port, logger, disabledPlugins = [] }) {
+export default async function createApp({
+  port = config.server.port,
+  logger,
+  disabledPlugins = [],
+}) {
   const app = fastify({
-    logger,
+    logger: {
+      level: config.log.level,
+      enabled: logger,
+    },
   });
 
   const activePlugins = plugins.filter(({ name }) => !disabledPlugins.includes(name));
 
   for (const { plugin, options, name } of activePlugins) {
     try {
-      app.register(plugin, options);
+      await app.register(plugin, options);
       app.log.info(`${name} plugin registered with success!`);
     } catch (error) {
       app.log.info(`${name} plugin cannot registered:`, error);
@@ -21,19 +30,18 @@ export default function createApp({ port, logger, disabledPlugins = [] }) {
 
   for (const route of container.routes) {
     try {
-      app.route(route);
+      await app.route(route);
     } catch (error) {
       app.log.error(`Error loading route: ${error.message}`);
     }
   }
 
-  app.listen(port, (err) => {
-    if (err) {
-      app.log.error(err);
-      process.exit(1);
-    }
-    app.log.info(`Server is running on port ${port}`);
-  });
+  try {
+    await app.listen({ port });
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
 
   return app;
 }

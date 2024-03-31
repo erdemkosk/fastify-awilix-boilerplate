@@ -9,7 +9,6 @@ let app;
 describe('Example integration Test', async () => {
   before(async () => {
     app = await createTestServer();
-    await app.listen();
   });
 
   after(async () => {
