@@ -6,7 +6,7 @@ import createTestServer from '../helper.js';
 
 let app;
 
-describe('Example Controller integration Test', async () => {
+describe('Example integration Test', async () => {
   before(async () => {
     app = await createTestServer();
     await app.listen();
