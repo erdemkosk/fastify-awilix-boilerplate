@@ -4,7 +4,6 @@ import {
   test, before, after, mock, beforeEach, describe,
 } from 'node:test';
 import createTestServer from '../../helper.js';
-import container from '../../../src/loaders/container.js';
 import CustomErrors from '../../../src/errors/error-util.js';
 import { ExampleRepository } from '../../mock/repositories/index.js';
 
@@ -15,9 +14,9 @@ let exampleService;
 
 describe('Example Service Unit', async () => {
   before(async () => {
-    await container.diContainer.register('ExampleRepository', awilix.asValue(ExampleRepository));
-    exampleService = container.diContainer.resolve('ExampleService');
     app = await createTestServer();
+    await app.diContainer.register('ExampleRepository', awilix.asValue(ExampleRepository));
+    exampleService = app.diContainer.resolve('ExampleService');
   });
 
   beforeEach(() => mock.restoreAll());

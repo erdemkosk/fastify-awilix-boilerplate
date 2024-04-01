@@ -3,6 +3,7 @@ import SwaggerUI from '@fastify/swagger-ui';
 import { fastifyAwilixPlugin } from '@fastify/awilix';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import rateLimitter from '@fastify/rate-limit';
 
 export const plugins = [
   {
@@ -40,5 +41,13 @@ export const plugins = [
     plugin: helmet,
     name: 'Helmet',
     options: { },
+  },
+  {
+    plugin: rateLimitter,
+    name: 'Rate Limitter',
+    options: {
+      max: 100,
+      timeWindow: '1 minute',
+    },
   },
 ];
