@@ -1,5 +1,10 @@
 const server = {
   port: process.env.PORT || 3000,
+  plugins: {
+    rateLimitter: {
+      max: process.env.RATE_LIMITTER_MAX_COUNT || 100,
+    },
+  },
 };
 
 export default {

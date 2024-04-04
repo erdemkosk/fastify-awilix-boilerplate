@@ -4,6 +4,7 @@ import { fastifyAwilixPlugin } from '@fastify/awilix';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimitter from '@fastify/rate-limit';
+import config from '../config/index.js';
 
 export const plugins = [
   {
@@ -46,7 +47,7 @@ export const plugins = [
     plugin: rateLimitter,
     name: 'Rate Limitter',
     options: {
-      max: 100,
+      max: config.server.plugins.rateLimitter.max,
       timeWindow: '1 minute',
     },
   },
