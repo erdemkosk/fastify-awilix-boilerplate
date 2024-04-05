@@ -19,4 +19,9 @@ export default [
     },
     handler: 'ExampleController.getExample',
   },
+  {
+    method: 'GET',
+    url: '/exmaples/dummy',
+    handler: 'ExampleController.getDummyJson',
+  },
 ];

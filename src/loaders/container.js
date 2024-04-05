@@ -4,6 +4,7 @@ import Fastify from 'fastify';
 import { diContainer } from '@fastify/awilix';
 import { transformModuleName, transformRouteHandler, __dirname } from './utils.js';
 import config from '../config/index.js';
+import ServiceCaller from './service-caller.js';
 
 export async function createContainer({ logger, customConfig }) {
   const fastify = Fastify({
@@ -15,6 +16,7 @@ export async function createContainer({ logger, customConfig }) {
     fastify: asFunction(() => fastify).singleton(),
     config: asFunction(() => customConfig || config).singleton(),
     logger: asFunction(() => fastify.log).singleton(),
+    ServiceCaller: asClass(ServiceCaller),
   }, {
     resolverOptions: {
       esModules: true,
@@ -23,6 +25,7 @@ export async function createContainer({ logger, customConfig }) {
 
   const modules = [
     ['../server/repositories/*.js'],
+    ['../server/service-callers/*.js'],
     ['../server/services/*.js'],
     ['../server/controllers/*.js'],
   ];

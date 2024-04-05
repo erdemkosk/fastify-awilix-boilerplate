@@ -4,13 +4,14 @@ const { ExampleNotFound } = CustomErrors;
 
 export default class ExampleService {
   constructor({
-    fastify, config, logger, ExampleRepository,
+    fastify, config, logger, ExampleRepository, ExampleServiceCaller,
   }) {
     this.fastify = fastify;
     this.config = config;
     this.logger = logger;
 
     this.ExampleRepository = ExampleRepository;
+    this.ExampleServiceCaller = ExampleServiceCaller;
   }
 
   async getExamples() {
@@ -36,6 +37,16 @@ export default class ExampleService {
 
     return {
       example,
+    };
+  }
+
+  async getDummyJson() {
+    const { ExampleServiceCaller } = this;
+
+    const values = await ExampleServiceCaller.getDummyJson();
+
+    return {
+      values,
     };
   }
 }

@@ -21,4 +21,12 @@ export default class ExampleController {
 
     return example;
   }
+
+  async getDummyJson(req, res) {
+    const { ExampleService } = this;
+
+    const { values } = await ExampleService.getDummyJson();
+
+    return values;
+  }
 }
