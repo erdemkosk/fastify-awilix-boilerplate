@@ -3,7 +3,8 @@
 import { createContainer } from './container.js';
 import { plugins } from './plugin.js';
 import config from '../config/index.js';
-import onSend from './hooks.js';
+import * as hooks from './hooks.js';
+import { HOOKS } from '../contraints/index.js';
 
 export default async function createApp({
   port = config.server.port,
@@ -31,7 +32,12 @@ export default async function createApp({
     }
   }
 
-  fastify.addHook('onSend', ...onSend());
+  for (const hookName of Object.values(HOOKS)) {
+    const hookFunction = hooks[hookName];
+    if (hookFunction) {
+      await fastify.addHook(hookName, ...hookFunction());
+    }
+  }
 
   try {
     await fastify.listen({ port });
