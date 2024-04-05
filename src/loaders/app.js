@@ -3,6 +3,7 @@
 import { createContainer } from './container.js';
 import { plugins } from './plugin.js';
 import config from '../config/index.js';
+import onSend from './hooks.js';
 
 export default async function createApp({
   port = config.server.port,
@@ -26,9 +27,11 @@ export default async function createApp({
     try {
       await fastify.route(route);
     } catch (error) {
-      app.log.error(`Error loading route: ${error.message}`);
+      fastify.log.error(`Error loading route: ${error.message}`);
     }
   }
+
+  fastify.addHook('onSend', ...onSend());
 
   try {
     await fastify.listen({ port });

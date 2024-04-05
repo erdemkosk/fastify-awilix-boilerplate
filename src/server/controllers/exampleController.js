@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export default class ExampleController {
   constructor({ ExampleService }) {
     this.ExampleService = ExampleService;
@@ -8,7 +9,7 @@ export default class ExampleController {
 
     const { examples } = await ExampleService.getExamples();
 
-    res.send(examples);
+    return examples;
   }
 
   async getExample(req, res) {
@@ -18,6 +19,6 @@ export default class ExampleController {
 
     const { example } = await ExampleService.getExample({ id });
 
-    res.send(example);
+    return example;
   }
 }
