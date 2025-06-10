@@ -1,27 +1,34 @@
 import { getExamples, getExample } from '../schemas/example.js';
 import { logRequest } from '../../loaders/middleware.js';
 
+const routeName = 'Example';
+
 export default [
   {
     method: 'GET',
-    url: '/examples',
+    url: '/',
     schema: {
-      getExamples,
+      tags: [routeName],
+      ...getExamples,
     },
     preHandler: [logRequest],
     handler: 'ExampleController.getExamples',
   },
   {
     method: 'GET',
-    url: '/examples/:id',
+    url: '/:id',
     schema: {
-      getExample,
+      tags: [routeName],
+      ...getExample,
     },
     handler: 'ExampleController.getExample',
   },
   {
     method: 'GET',
-    url: '/exmaples/dummy',
+    url: '/dummy',
+    schema: {
+      tags: [routeName],
+    },
     handler: 'ExampleController.getDummyJson',
   },
 ];

@@ -1,5 +1,6 @@
 const server = {
   port: process.env.PORT || 4000,
+  host: process.env.HOST || 'localhost',
   plugins: {
     rateLimitter: {
       max: process.env.RATE_LIMITTER_MAX_COUNT || 100,

@@ -3,15 +3,14 @@
 import { createContainer } from './container.js';
 import { plugins } from './plugin.js';
 import config from '../config/index.js';
-import * as hooks from './hooks.js';
-import { HOOKS } from '../contraints/index.js';
+import loadRoutes from './route.js';
 
 export default async function createApp({
   port = config.server.port,
   logger,
   disabledPlugins = [],
 }) {
-  const { fastify, routes } = await createContainer({ logger });
+  const { fastify } = await createContainer({ logger });
 
   const activePlugins = plugins.filter(({ name }) => !disabledPlugins.includes(name));
 
@@ -24,23 +23,14 @@ export default async function createApp({
     }
   }
 
-  for (const route of routes) {
-    try {
-      await fastify.route(route);
-    } catch (error) {
-      fastify.log.error(`Error loading route: ${error.message}`);
-    }
-  }
-
-  for (const hookName of Object.values(HOOKS)) {
-    const hookFunction = hooks[hookName];
-    if (hookFunction) {
-      await fastify.addHook(hookName, ...hookFunction());
-    }
-  }
+  // Load routes
+  await loadRoutes(fastify);
 
   try {
-    await fastify.listen({ port });
+    await fastify.listen({
+      port,
+      host: '0.0.0.0',
+    });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

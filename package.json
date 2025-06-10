@@ -1,6 +1,6 @@
 {
   "name": "fastify-awilix-boilerplate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Boilerplate for building web applications with Fastify and dependency injection",
   "main": "index.js",
   "type": "module",
